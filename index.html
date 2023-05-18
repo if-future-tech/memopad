@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <title>Mandalart</title>
+</head>
+<body>
+    <div style="text-align: center;">
+      <button id="reload">Reload</button>
+    </div>
+    <div class="container">
+        <div class="row">
+          <textarea id="LT" data-number="1" class="box">要件1</textarea>
+          <textarea id="LM" data-number="2" class="box">要件2</textarea>
+          <textarea id="LB" data-number="3" class="box">要件3</textarea>
+        </div>
+        <div class="row">
+          <textarea id="CT" data-number="4" class="box">要件4</textarea>
+          <textarea id="CM" data-number="0" class="box">テーマ</textarea>
+          <textarea id="CB" data-number="5" class="box">要件5</textarea>
+        </div>
+        <div class="row">
+          <textarea id="RT" data-number="6" class="box">要件6</textarea>
+          <textarea id="RM" data-number="7" class="box">要件7</textarea>
+          <textarea id="RB" data-number="8" class="box">要件8</textarea>
+        </div>
+    </div>
+    <div style="text-align: center;">
+      <button id="save">Save</button>
+      <button id="clear">Clear</button>
+    </div>
+<script>
+  //取得処理
+  $("#reload").on("click", function() {  // イベントリスナーを「リロード」ボタンにバインドします
+    let textareas = $("textarea[data-number]");  // 0 ～ 8 の番号を持つすべてのテキストエリアを取得します
+      textareas.each(function() {    // すべてのテキストエリアをループします
+        let value = localStorage.getItem($(this).data("number"));
+        $(this).val(value);
+    });
+  });
+
+  //保存処理
+  let textareas = $("textarea[data-number]");  // 0 ～ 8 の番号を持つすべてのテキストエリアを取得します
+  $("#save").on("click", function() {  // イベントリスナーを「保存」ボタンにバインドします
+    textareas.each(function() {    // すべてのテキストエリアをループします
+      let value = $(this).val();      // テキストエリアの値を取得します
+      localStorage.setItem($(this).data("number"), value);      // 値をローカル ストレージに保存します
+    });
+  });
+
+    //削除処理
+    $("#clear").on("click", function kesu() {
+      localStorage.clear();      // ローカルストレージをクリアします
+    });
+
+  //書き換え処理
+  $('.box').on('click', function() {  // ボックス要素にクリックイベントを追加
+    const text = $(this).text();    // クリックされた要素のテキストを取得
+    $('.box').each(function() {     //中身書き換え処理
+        if (text !== '') {          //要素が空白でなければ
+            $('#CM').text(text);    //テーマの中身をクリックされた要素のテキストに書き換える
+            const boxNum = $(this).data('number');//番号取得
+            if (boxNum >= 1 && boxNum <= 8) {    // 要件1から要件8まで
+                $(this).text('');   //マスを空白にする
+            }
+        }
+    });
+
+    //戻す処理
+    $('#CM').on('click', function() {// テーマ要素にクリックイベントを追加
+        let flag = true;
+        boxes.each(function(index) {
+            if ($(this).text() === defBox[index]) {
+                flag = false;
+                return false; // 変更されたらループを抜ける
+            }
+            $(this).text(defBox[index]);
+        });
+/*                 if (flag) {                         //turue?
+            boxes.each(function(index) {    //全部を元に戻す
+                $(this).text(defBox[index]);
+            });
+        } */
+    });
+});
+/*   let textareas = $("textarea[data-number]");  // 0 ～ 8 の番号を持つすべてのテキストエリアを取得します
+  $("#save").on("click", function() {  // イベントリスナーを「保存」ボタンにバインドします
+    textareas.each(function() {    // すべてのテキストエリアをループします
+      let value = (this).textContent;//テキストエリアの値を取得します
+      localStorage.setItem((this).id, value);      // 値をローカル ストレージに保存します
+    });
+  });
+ */
+</script>
+<style>
+  body { background-color: #C0C0C0; }
+  .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+  }
+
+  .box {
+      width: 150px;
+      height: 150px;
+      border: 1px solid black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 16px;
+      font-weight: bold;
+      color: #FFFFFF;
+  }
+
+    #LT{background-color: #E4007F;}
+    #LM{background-color: #920783;}
+    #LB{background-color: #1D2088;}
+    #CT{background-color: #D7000F;}
+    #CM{background-color: #333132;}
+    #CB{background-color: #009999;}
+    #RT{background-color: #E48E00;}
+    #RM{background-color: #F3E100;}
+    #RB{background-color: #009944;}
+  button{
+    width: 200px;
+    height: 50px;
+    font-size: 24px;
+    margin: 10px 10px;
+  }
+</style>
+</body>
+</html>
